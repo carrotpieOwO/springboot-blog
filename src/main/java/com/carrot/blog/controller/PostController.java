@@ -15,4 +15,14 @@ public class PostController {
 		return "/post/detail";
 	}
 	
+	@GetMapping("/post/write")
+	public String write() {
+		return "/post/write";
+	}
+	
+	@GetMapping("/post/update/{id}")
+	public String update() {
+		return "/post/update";
+	}
+	
 }

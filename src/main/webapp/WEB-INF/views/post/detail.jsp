@@ -12,11 +12,48 @@
 			<p class="card-text">내용</p>
 		</div>
 		<div class="card-footer">
-			<button id="update--submit" class="btn btn-dark ">수정</button>
-			<button id="delete--submit" class="btn btn-danger ">삭제</button>
-
+			<button id="post--update--submit" class="btn btn-warning ">수정</button>
+			<button id="post--delete--submit" class="btn btn-danger ">삭제</button>
+			<a href="/" class="btn btn-dark ">목록</a>
 		</div>
 	</div>
 
+	<br />
+	<div class="card">
+		<div class="form-group">
+			<div class="card-header">
+				<h6 class="card-title">댓글</h6>
+			</div>
+			<div class="card-body">
+				<textarea class="form-control" rows="2" id="content"></textarea>
+			</div>
+			<div class="card-footer">
+				<button id="comment--save--submit" class="btn btn-dark ">등록</button>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="card">
+		<div class="form-group">
+			<div class="card-header">
+				<h4 class="card-title">댓글리스트</h4>
+			</div>
+			<div class="comment--items card-body">
+				<div class="comment--item">
+					<span class="comment--content">내용</span>
+					<span id="comment--delete--submit" value="1">X</span>
+				</div>
+				<div class="comment--item">
+					<span class="comment-content">내용</span>
+					<span id="comment-delete-submit" value="1">X</span>
+				</div>
+				<div class="comment--item">
+					<span class="comment-content">내용</span>
+					<span id="comment-delete-submit" value="1">X</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>
 <%@include file="../include/footer.jsp"%>
