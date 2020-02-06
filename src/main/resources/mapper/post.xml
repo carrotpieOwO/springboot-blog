@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.carrot.blog.repository.PostRepository">
 
-  <select id="findAll" resultType="com.carrot.blog.model.Post">
+  <select id="findAll" resultType="com.carrot.blog.model.post.Post">
     select * from mem order by id desc
   </select>
   
