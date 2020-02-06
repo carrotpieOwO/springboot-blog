@@ -8,21 +8,5 @@
     select * from mem order by id desc
   </select>
   
-   <select id="findById" resultType="com.cos.springboot.model.Mem">
-    select * from mem where id = #{id}
-    <!-- 물음표를 #{}으로 하는데, 변수명을 정확하게 해야함 // 제일 끝에 세미콜론 안해도됨-->
-  </select>
-  
-  <insert id="save">
-  	insert into mem(username, password, email, createTime)
-  	values(#{username}, #{password}, #{email}, now())
-  </insert>
-  
-  <update id="update">
-  	update mem set password = #{password}, email = #{email} where id = #{id}  
-  </update>
-  
-  <delete id="delete">
-  	delete from mem where id = #{id}
-  </delete>
+ 
 </mapper>
