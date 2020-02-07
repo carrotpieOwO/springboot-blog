@@ -16,5 +16,10 @@
   <select id="findByUsername" resultType="int">
     select count(*) from user where username = #{username}
   </select>
+  
+  <select id="findByUsernameAndPassword" resultType="com.carrot.blog.model.user.User">
+    select id, username, email, profile from user where username = #{username} and password=#{password}
+  </select>
+  <!-- 로그인 시, 세션에 유저정보 통채로 담기위해서 패스워드 빼고 모델에 다 담는다. -->
    
 </mapper>

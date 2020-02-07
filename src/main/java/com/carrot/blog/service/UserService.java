@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.carrot.blog.model.RespCode;
+import com.carrot.blog.model.ReturnCode;
+import com.carrot.blog.model.user.User;
 import com.carrot.blog.model.user.dto.ReqJoinDto;
+import com.carrot.blog.model.user.dto.ReqLoginDto;
 import com.carrot.blog.repository.UserRepository;
 
 @Service
@@ -23,17 +25,24 @@ public class UserService {
 	// select는 롤백할거 없으니까 트랜잭션 안걸어도됨
 	public int 회원가입(ReqJoinDto dto) {
 		try {
-			//아이디 중복체크 처리
+			// 아이디 중복체크 처리
 			int result = userRepository.findByUsername(dto.getUsername());
-			
-			if(result==1) {
-				return RespCode.아이디중복;
-			}else {
+
+			if (result == 1) {
+				return ReturnCode.아이디중복;
+			} else {
 				return userRepository.save(dto);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
-		
+
+	}
+
+	public User 로그인(ReqLoginDto dto) {
+		System.out.println(dto);
+
+		return userRepository.findByUsernameAndPassword(dto);
+
 	}
 }
