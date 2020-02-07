@@ -108,7 +108,7 @@ public class UserController {
 			session.setAttribute("principal", principal);
 			return new ResponseEntity<RespCM>(new RespCM(200,"ok"), HttpStatus.OK);
 		}else {
-			return new ResponseEntity<RespCM>(new RespCM(200,"fail"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<RespCM>(new RespCM(400,"fail"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
