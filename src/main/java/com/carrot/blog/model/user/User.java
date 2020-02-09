@@ -10,13 +10,8 @@ public class User {
 	private String profile;
 	private Timestamp createDate;
 	
-	public User(String username, String password, String email, String profile, Timestamp createDate) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.profile = profile;
-		this.createDate = createDate;
+	public User() {
+		System.out.println("user()호출됨");
 	}
 	
 	public User(int id, String username, String password, String email, String profile, Timestamp createDate) {
@@ -28,15 +23,6 @@ public class User {
 		this.profile = profile;
 		this.createDate = createDate;
 	}
-
-	
-
-
-	public User() {
-		System.out.println("user()호출됨");
-	}
-
-
 
 
 	public void setId(int id) {
@@ -87,7 +73,5 @@ public class User {
 	public Timestamp getCreateDate() {
 		return createDate;
 	}
-	
-	
 	
 }

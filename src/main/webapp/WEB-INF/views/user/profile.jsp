@@ -7,25 +7,58 @@
 	<form action="/user/profile" method="post" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="username">Username:</label> 
-			<input type="text" class="form-control" name="username" value="ssar" readonly="readonly">
+			<input type="text" class="form-control" id="username" value="${sessionScope.principal.username}" readonly="readonly">
 		</div>
 		<div class="form-group">
 			<label for="password">Password:</label> 
-			<input type="password" class="form-control" name="password" value="1234">
+			<input type="password" class="form-control" id="password" value="">
+			<p id="pwmsg"></p>
 		</div>
 		<div class="form-group">
 			<label for="email">Email:</label> 
-			<input type="email" class="form-control" name="email" value="ssar@nate.com" readonly="readonly">
+			<input type="email" class="form-control" id="email" value="${sessionScope.principal.email}" readonly="readonly">
 		</div>
 
 		<!-- 프로필 사진 -->
 		<div class="form-group">
 			<label for="profile">Email:</label> 
-			<input type="file" class="form-control-file border" name="profile" value="my.jpg" />
+			<input type="file" class="form-control-file border" id="profile" value="${sessionScope.principal.profile}" />
 		</div>
-		<button class="btn btn-dark">수정</button>
+		<button type="button" id="update--submit" class="btn btn-dark">수정</button>
 	</form>
 
 </div>
+
+<script>
+	$('#update--submit').on('click', function() {
+		
+		
+		var data = {
+			id : ${sessionScope.principal.id},
+			password : $('#password').val(),
+			profile :$('#profile').val()
+		};
+		$.ajax({
+			type : 'PUT',
+			url : '/user/profile',
+			data : JSON.stringify(data), //만약 get 타입으로 데이터 보내면 'username=ssar' 이런식으로 쿼리스트링처럼 해서 날려야함,
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json'
+		}).done(function(r) {
+			if (r.statusCode == 200) {
+				alert('수정 성공');
+				location.href = '/';
+			} else {
+					alert('수정 실패');
+
+				}
+			
+		}).fail(function(r) {
+			alert('회원가입 실패');
+			$('#pwmsg').html(r.responseJSON.password);
+			 
+		});
+	});
+</script>
 
 <%@include file="../include/footer.jsp"%>

@@ -26,8 +26,17 @@
 		<!-- Navbar links -->
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" href="/user/join">Join</a></li>
-				<li class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>
+				<c:choose>
+					<c:when test="${not empty sessionScope.principal}">
+						<li class="nav-item"><a class="nav-link" href="/post/write">Post</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/profile/${sessionScope.principal.id}">Profile</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/logout">LogOut</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="nav-item"><a class="nav-link" href="/user/join">Join</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>	
+					</c:otherwise>
+				</c:choose>		
 			</ul>
 		</div>
 	</nav>

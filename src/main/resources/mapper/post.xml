@@ -5,8 +5,24 @@
 <mapper namespace="com.carrot.blog.repository.PostRepository">
 
   <select id="findAll" resultType="com.carrot.blog.model.post.Post">
-    select * from mem order by id desc
+    select * from post order by id desc
   </select>
   
+  <insert id="write">
+  	insert into post(title, content, userId, createDate) 
+  	values(#{title}, #{content}, #{userId}, now())
+  </insert>
+  
+  <select id="findById" resultType="com.carrot.blog.model.post.Post">
+    select * from post where id=#{id}
+  </select>
+  
+  <update id="update">
+	  update post set title=#{title}, content=#{content} where id=#{id}
+  </update>
+  
    
+   <delete id="delete">
+   	delete from post where id=#{id}	
+   </delete>
 </mapper>

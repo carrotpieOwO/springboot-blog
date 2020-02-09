@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.carrot.blog.model.RespCode;
+import com.carrot.blog.model.ReturnCode;
+import com.carrot.blog.model.user.User;
 import com.carrot.blog.model.user.dto.ReqJoinDto;
+import com.carrot.blog.model.user.dto.ReqLoginDto;
+import com.carrot.blog.model.user.dto.ReqUpdateDto;
 import com.carrot.blog.repository.UserRepository;
 
 @Service
@@ -27,12 +30,35 @@ public class UserService {
 			int result = userRepository.findByUsername(dto.getUsername());
 			
 			if(result==1) {
-				return RespCode.아이디중복;
+				return ReturnCode.아이디중복;
 			}else {
 				return userRepository.save(dto);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException();
+		}
+		
+	}
+	
+	public User 로그인(ReqLoginDto dto) {
+		return userRepository.findByUsernameAndPassword(dto);
+		
+	}
+	
+	@Transactional
+	public int 프로필(ReqUpdateDto dto) {
+		try {
+			//아이디 중복체크 처리
+			int result = userRepository.update(dto);
+			
+			if(result==1) {
+				return ReturnCode.성공;
+			}else {
+				return ReturnCode.오류;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnCode.오류;
 		}
 		
 	}
