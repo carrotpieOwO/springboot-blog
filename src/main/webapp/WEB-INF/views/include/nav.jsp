@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -8,13 +10,14 @@
 <title>블로그</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-md bg-danger navbar-dark">
 		<!-- Brand -->
 		<a class="navbar-brand" href="/">당근로그</a>
 
@@ -38,6 +41,8 @@
 					</c:otherwise>
 				</c:choose>		
 			</ul>
+			<img src="/media/${sessionScope.principal.profile}" class="rounded-circle my__img ml-auto" width="30px" height="30px" onError="javascript:this.src='/images/unknown.jpg'"/>
+			<!-- 사진 못찾았을 경우 디폴트 이미지 주기 onerror -->
 		</div>
 	</nav>
 	<br />

@@ -1,5 +1,7 @@
 package com.carrot.blog.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +10,6 @@ import com.carrot.blog.model.ReturnCode;
 import com.carrot.blog.model.user.User;
 import com.carrot.blog.model.user.dto.ReqJoinDto;
 import com.carrot.blog.model.user.dto.ReqLoginDto;
-import com.carrot.blog.model.user.dto.ReqUpdateDto;
 import com.carrot.blog.repository.UserRepository;
 
 @Service
@@ -17,7 +18,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	@Autowired
+	private HttpSession session;
+	
 	@Transactional
 	// 트랜잭션하면 에러안나고 다 수행되면 그때 커밋되고,
 	// 예외처리 runtimeException 으로 하면 오류났을때 롤백된다.
@@ -45,21 +49,39 @@ public class UserService {
 		
 	}
 	
-	@Transactional
-	public int 프로필(ReqUpdateDto dto) {
-		try {
-			//아이디 중복체크 처리
-			int result = userRepository.update(dto);
+//	@Transactional
+//	public int 프로필(ReqUpdateDto dto) {
+//		try {
+//			//아이디 중복체크 처리
+//			int result = userRepository.update(dto);
+//			
+//			if(result==1) {
+//				return ReturnCode.성공;
+//			}else {
+//				return ReturnCode.오류;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return ReturnCode.오류;
+//		}
+//		
+//	}
+	
+	public int 수정완료(int id, String password, String profile) {
+		System.out.println(profile);
+		int result = userRepository.update(id, password, profile);
+		
+		if(result==1) {
+			User user = userRepository.findById(id);
+			session.setAttribute("principal", user); 
 			
-			if(result==1) {
-				return ReturnCode.성공;
-			}else {
-				return ReturnCode.오류;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ReturnCode.오류;
+			return 1;
+			
+		}else {
+			return -1;
 		}
 		
 	}
+	
+	
 }

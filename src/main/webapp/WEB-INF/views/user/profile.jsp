@@ -4,14 +4,16 @@
 
 	<!-- 얘네는 사진때문에 컨텐트타입 멀티파트로 바꾸고 이런거 때문에 귀찮아서 그냥 폼으로 전송 -->
 	<!-- form은.. put으로 안됨.. -->
-	<form action="/user/profile" method="post" enctype="multipart/form-data">
+	<form:form action="/user/profile" method="PUT" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="${sessionScope.principal.id}">
+		
 		<div class="form-group">
 			<label for="username">Username:</label> 
 			<input type="text" class="form-control" id="username" value="${sessionScope.principal.username}" readonly="readonly">
 		</div>
 		<div class="form-group">
 			<label for="password">Password:</label> 
-			<input type="password" class="form-control" id="password" value="">
+			<input type="password" class="form-control" id="password" name="password" value="" required="required"/>
 			<p id="pwmsg"></p>
 		</div>
 		<div class="form-group">
@@ -21,16 +23,18 @@
 
 		<!-- 프로필 사진 -->
 		<div class="form-group">
-			<label for="profile">Email:</label> 
-			<input type="file" class="form-control-file border" id="profile" value="${sessionScope.principal.profile}" />
+			<label for="profile">profile:</label> 
+			<input type="file" class="form-control-file border" name="profile" id="profile" />
+			<p>${sessionScope.principal.profile}</p>
 		</div>
-		<button type="button" id="update--submit" class="btn btn-dark">수정</button>
-	</form>
+		<button id="update--submit" class="btn btn-dark">수정</button>
+	</form:form>
 
 </div>
 
+
 <script>
-	$('#update--submit').on('click', function() {
+/* 	$('#update--submit').on('click', function() {
 		
 		
 		var data = {
@@ -58,7 +62,7 @@
 			$('#pwmsg').html(r.responseJSON.password);
 			 
 		});
-	});
+	}); */
 </script>
 
 <%@include file="../include/footer.jsp"%>

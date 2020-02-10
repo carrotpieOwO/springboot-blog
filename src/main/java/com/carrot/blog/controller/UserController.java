@@ -1,12 +1,18 @@
 package com.carrot.blog.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,13 +23,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.carrot.blog.model.RespCM;
 import com.carrot.blog.model.ReturnCode;
 import com.carrot.blog.model.user.User;
 import com.carrot.blog.model.user.dto.ReqJoinDto;
 import com.carrot.blog.model.user.dto.ReqLoginDto;
-import com.carrot.blog.model.user.dto.ReqUpdateDto;
 import com.carrot.blog.repository.UserRepository;
 import com.carrot.blog.service.UserService;
 
@@ -31,7 +39,10 @@ import com.carrot.blog.service.UserService;
 public class UserController {
 
 	private static final String TAG = "UserController:";
-
+	
+	@Value("${file.path}")
+	private String fileRealPath; //서버에 배포하면 경로 변경해야함
+	
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -109,27 +120,69 @@ public class UserController {
 		
 	}
 	
+//	@PutMapping("user/profile")
+//	public ResponseEntity<?> profile(@Valid @RequestBody User user, BindingResult bindingResult) {
+//		/*if(bindingResult.hasErrors()) {
+//			Map<String, String> errorMap = new HashMap<>();
+//			
+//			for(FieldError error:bindingResult.getFieldErrors()) {
+//				errorMap.put(error.getField(), error.getDefaultMessage());
+//			}
+//			System.out.println(errorMap);
+//			return new ResponseEntity<Map<String,String>>(errorMap,HttpStatus.BAD_REQUEST);
+//		}
+//		
+//		int result = userService.프로필(dto);
+//		int id = dto.getId();
+//		if(result == 1) {
+//			User user = userRepository.findById(id);
+//			session.setAttribute("principal", user);
+//			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
+//		}else {*/
+//			//return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
+//		System.out.println("UserController: "+user.getId());
+//		System.out.println("UserController: "+user.getPassword());
+//		
+//		return null;
+//		}
+//		
+//	}
+	
+	//form:form 사용함
 	@PutMapping("user/profile")
-	public ResponseEntity<?> profile(@Valid @RequestBody ReqUpdateDto dto, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<>();
+	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile) {
+		//사진이 여러장 일땐 MultipartFile[] 이렇게 배열로 받기
+		System.out.println(profile.getOriginalFilename());
+		
+		UUID uuid = UUID.randomUUID();
+		String uuidFilename= uuid+"_"+profile.getOriginalFilename();
+		//nio 객체 ! - 사진, 동영상, 스트리밍 다 지원 해줌
+		Path filePath = Paths.get(fileRealPath+uuidFilename);
+		try {
+			Files.write(filePath, profile.getBytes());
+			//옵션은 yml 에서 걸꺼기 때문에 여기서 안건다.
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		int result = userService.수정완료(id, password, uuidFilename);
+		StringBuffer sb = new StringBuffer();
+		if(result==1) {
+			//여기서 그냥 "/" 라고하면 데이터 안들고감..
+			//return "redirect:/";
+			sb.append("<script>");
+			sb.append("alert('수정완료');");
+			sb.append("location.href='/';");
+			sb.append("</script>");
+			return sb.toString();
 			
-			for(FieldError error:bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			}
-			System.out.println(errorMap);
-			return new ResponseEntity<Map<String,String>>(errorMap,HttpStatus.BAD_REQUEST);
-		}
-		
-		int result = userService.프로필(dto);
-		int id = dto.getId();
-		if(result == 1) {
-			User user = userRepository.findById(id);
-			session.setAttribute("principal", user);
-			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		}else {
-			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
-		}
-		
+			sb.append("<script>");
+			sb.append("alert('수정실패');");
+			sb.append("history.back();");
+			sb.append("</script>");
+			return sb.toString();
+		}		
+
 	}
 }
