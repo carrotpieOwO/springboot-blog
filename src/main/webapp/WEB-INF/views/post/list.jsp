@@ -10,7 +10,7 @@
 			<tr>
 				<th>No</th>
 				<th>title</th>
-				<!-- <th>username</th> -->
+				<th>username</th> 
 				<th>date</th>
 			</tr>
 		</thead>
@@ -19,8 +19,9 @@
 				<!-- boards를 돌면서 board 변수에 추가  -->
 				<tr>
 					<td>${post.id}</td>
-					<td><a href="/post/${post.id}">${post.title}</a></td>
+					<td><a href="/post/detail/${post.id}">${post.title}</a></td>
 					<!-- 하이퍼링크 클릭은 모두 get요청 -->
+					<td>${post.username}</td>
 					<td><fmt:formatDate value="${post.createDate}"
 							pattern="yyyy.MM.dd HH:mm" /></td>
 				</tr>

@@ -4,24 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.carrot.blog.repository.CommentRepository">
 
-  <select id="findAll" resultType="com.carrot.blog.model.comment.Comment">
-    select * from mem order by id desc
-  </select>
-  
-  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.carrot.blog.model.comment.dto.ReqDetailDto">
-  <!-- parameterType 원래 안적어도 생략가능한거 -->
-  <!-- 근데 id 안적으면 0 으로 전송되서 keyproperty 해서 db에 저장된 id값이 저기에 담긴다. -->
-  <!-- 오라클에서는 다른방법 써야하지만 mysql에서는 useGeneratedKeys로 자동id값 생성 가능 -->
-  	insert into comment(userId, postId, content, createDate) 
-  	values(#{userId}, #{postId}, #{content}, now())
-  </insert>
-  
-  <select id="findById" resultType="com.carrot.blog.model.comment.dto.RespDetailDto">
-  	select c.id, c.userId, c.postId, c.content, c.createDate, u.username from comment c inner join user u on c.userId=u.id where c.id=#{id}
-  </select>
-  
-  <delete id="delete">
-  	delete from comment where id = #{id}
-  </delete>
+	<select id="findAll"
+		resultType="com.carrot.blog.model.comment.dto.RespDetailDto">
+		select c.id, c.userId, c.postId, c.content, c.createDate, u.username
+		from comment c inner join user u
+		on c.userId = u.id
+		order by c.id desc
+	</select>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.carrot.blog.model.comment.dto.ReqDetailDto">
+		<!-- parameterType 원래 안적어도 생략가능한거 -->
+		<!-- 근데 id 안적으면 0 으로 전송되서 keyproperty 해서 db에 저장된 id값이 저기에 담긴다. -->
+		<!-- 오라클에서는 다른방법 써야하지만 mysql에서는 useGeneratedKeys로 자동id값 생성 가능 -->
+		insert into comment(userId, postId, content, createDate)
+		values(#{userId}, #{postId}, #{content}, now())
+	</insert>
+
+	<select id="findById"
+		resultType="com.carrot.blog.model.comment.dto.RespDetailDto">
+		select c.id, c.userId, c.postId, c.content, c.createDate, u.username
+		from comment c inner join user u
+		on c.userId = u.id
+		where c.id = #{id}
+	</select>
+
+	<delete id="delete">
+		delete from comment where id = #{id}
+	</delete>
 
 </mapper>

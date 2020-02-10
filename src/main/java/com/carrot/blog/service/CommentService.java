@@ -1,5 +1,7 @@
 package com.carrot.blog.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class CommentService {
 		}
 		
 		
+	}
+	
+	public List<RespDetailDto> 댓글목록() {
+		List<RespDetailDto> respDetailDto = commentRepository.findAll();
+		return respDetailDto;
 	}
 	
 	public int 댓글삭제(int id) {

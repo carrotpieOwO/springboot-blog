@@ -32,7 +32,7 @@ $('#update--submit').on('click', function() {
 	}).done(function(r) {
 		if (r.statusCode == 200) {
 			alert('수정 성공');
-			location.href = '/post/${post.id}';
+			location.href = '/post/detail/${post.id}';
 		} else {
 				alert('수정 실패');
 

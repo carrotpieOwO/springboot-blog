@@ -1,22 +1,21 @@
-package com.carrot.blog.model.comment.dto;
+package com.carrot.blog.model.post.dto;
 
 import java.sql.Timestamp;
-
-import com.carrot.blog.model.RespCM;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class RespDetailDto {
-	private RespCM status;
+@NoArgsConstructor
+public class RespListDto {
+	
 	private int id;
-	private int userId;
-	private int postId;
+	private String title;
 	private String content;
+	private int userId;
 	private Timestamp createDate;
 	private String username;
+
 }

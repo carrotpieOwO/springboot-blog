@@ -14,12 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReqWriteDto {
 	
-	@NotBlank(message="타이틀을 입력하세요")
 	private String title;
-	
-	@NotBlank(message="내용을 입력하세요.")
 	private String content;
-	
 	private int userId;
 
 }
