@@ -3,11 +3,12 @@ package com.carrot.blog.model.post;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Post {
 	private int id;
@@ -15,5 +16,15 @@ public class Post {
 	private String content;
 	private int userId;
 	private Timestamp createDate;
+	
+	@Builder
+	public Post(String title, String content, int userId) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.userId = userId;
+	}
+	
+	
 
 }
