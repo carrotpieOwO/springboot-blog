@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="card-footer">
-			<c:if test="${sessionScope.principal.id eq post.userId}">
+			<c:if test="${principal.id eq post.userId}">
 				<button id="post--update--submit" class="btn btn-warning ">수정</button>
 				<button id="post--delete--submit" class="btn btn-danger"
 					value="${post.id}">삭제</button>
@@ -36,7 +36,7 @@
 			</div>
 			<div class="card-body">
 				<input type="hidden" id="postId" value="${post.id}" /> <input
-					type="hidden" id="userId" value="${sessionScope.principal.id}" />
+					type="hidden" id="userId" value="${principal.id}" />
 				<textarea class="form-control" rows="2" id="content"></textarea>
 			</div>
 			<div class="card-footer">
@@ -58,7 +58,7 @@
 
 						<div class="font-italic">${comment.content}</div>
 						<div class="badge badge-warning badge-pill ml-auto">작성자:${comment.username}</div>
-						<c:if test="${comment.userId eq sessionScope.principal.id}">
+						<c:if test="${comment.userId eq principal.id}">
 						<button onclick="commentDelete(${comment.id})"
 							class="badge badge-danger badge-pill">삭제</button>
 						</c:if>

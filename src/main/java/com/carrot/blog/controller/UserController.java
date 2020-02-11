@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -31,7 +31,6 @@ import com.carrot.blog.model.RespCM;
 import com.carrot.blog.model.ReturnCode;
 import com.carrot.blog.model.user.User;
 import com.carrot.blog.model.user.dto.ReqJoinDto;
-import com.carrot.blog.model.user.dto.ReqLoginDto;
 import com.carrot.blog.repository.UserRepository;
 import com.carrot.blog.service.UserService;
 
@@ -45,8 +44,8 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private HttpSession session;
+//	@Autowired
+//	private HttpSession session;
 	@Autowired
 	private UserRepository userRepository;
 
@@ -60,15 +59,16 @@ public class UserController {
 		return "/user/login";
 	}
 	
-	@GetMapping("user/logout")
-	public String logout() {
-		session.invalidate();
-		return "redirect:/";
-	}
+//	@GetMapping("user/logout")
+//	public String logout() {
+//		session.invalidate();
+//		return "redirect:/";
+//	}
 
 	@GetMapping("user/profile/{id}")
-	public String profile(@PathVariable int id) {
-		User principal = (User)session.getAttribute("principal");
+	public String profile(@PathVariable int id, 
+			@AuthenticationPrincipal User principal) {
+		//User principal = (User)session.getAttribute("principal");
 		
 		
 			if(principal.getId() == id) {
@@ -107,18 +107,18 @@ public class UserController {
 		}
 	}
 	
-	@PostMapping("user/login")
-	public ResponseEntity<?> login(@Valid @RequestBody ReqLoginDto dto, BindingResult bindingResult) {
-		
-		User principal = userService.로그인(dto);
-		if(principal != null) {
-			session.setAttribute("principal", principal);
-			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
-		}
-		
-	}
+	/*
+	 * @PostMapping("user/login") public ResponseEntity<?> login(@Valid @RequestBody
+	 * ReqLoginDto dto, BindingResult bindingResult) {
+	 * 
+	 * User principal = userService.로그인(dto); if(principal != null) {
+	 * session.setAttribute("principal", principal); return new
+	 * ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK); }else { return
+	 * new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
+	 * }
+	 * 
+	 * }
+	 */
 	
 //	@PutMapping("user/profile")
 //	public ResponseEntity<?> profile(@Valid @RequestBody User user, BindingResult bindingResult) {
@@ -150,7 +150,8 @@ public class UserController {
 	
 	//form:form 사용함
 	@PutMapping("user/profile")
-	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile) {
+	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile, 
+			@AuthenticationPrincipal User principal) {
 		//사진이 여러장 일땐 MultipartFile[] 이렇게 배열로 받기
 		System.out.println(profile.getOriginalFilename());
 		
@@ -161,11 +162,11 @@ public class UserController {
 		try {
 			Files.write(filePath, profile.getBytes());
 			//옵션은 yml 에서 걸꺼기 때문에 여기서 안건다.
-		} catch (IOException e) {
+		}catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		int result = userService.수정완료(id, password, uuidFilename);
+		int result = userService.수정완료(id, password, uuidFilename, principal);
 		StringBuffer sb = new StringBuffer();
 		if(result==1) {
 			//여기서 그냥 "/" 라고하면 데이터 안들고감..

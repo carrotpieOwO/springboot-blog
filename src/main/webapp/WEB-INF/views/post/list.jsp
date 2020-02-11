@@ -15,6 +15,7 @@
 			</tr>
 		</thead>
 		<tbody>
+		<p> ${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.username} </p>
 			<c:forEach var="post" items="${posts}">
 				<!-- boards를 돌면서 board 변수에 추가  -->
 				<tr>

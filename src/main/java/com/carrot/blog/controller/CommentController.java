@@ -3,6 +3,7 @@ package com.carrot.blog.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.carrot.blog.model.RespCM;
 import com.carrot.blog.model.comment.dto.ReqDetailDto;
 import com.carrot.blog.model.comment.dto.RespDetailDto;
+import com.carrot.blog.model.user.User;
 import com.carrot.blog.service.CommentService;
 
 //@Controller + @ResponseBody : 모든게 다 데이터고, 뷰리졸버가 관여안함
@@ -37,8 +39,8 @@ public class CommentController {
 	}
 	
 	@DeleteMapping("/comment/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable int id) {
-		int result = commentService.댓글삭제(id);
+	public ResponseEntity<?> delete(@PathVariable int id, @AuthenticationPrincipal User principal) {
+		int result = commentService.댓글삭제(id, principal);
 		
 		//ok, fail, comment 리턴
 		if(result == 1) {

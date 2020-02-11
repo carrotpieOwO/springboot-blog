@@ -22,7 +22,7 @@
 		var data = {
 			title : $('#title').val(),
 			content : $('#content').val(),
-			userId : ${sessionScope.principal.id}
+			userId : ${principal.id}
 		};
 		$.ajax({
 			type : 'POST',

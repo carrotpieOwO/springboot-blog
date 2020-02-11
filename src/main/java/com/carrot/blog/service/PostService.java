@@ -20,9 +20,9 @@ public class PostService {
 
 	@Autowired
 	private PostRepository postRepository;
-	
-	@Autowired
-	private HttpSession session;
+//	
+//	@Autowired
+//	private HttpSession session;
 
 	public int 글쓰기(ReqWriteDto dto) {
 		return postRepository.write(dto);
@@ -36,8 +36,8 @@ public class PostService {
 		return postRepository.findById(id);
 	}
 	
-	public Post 수정하기(int id) {
-		User principal = (User) session.getAttribute("principal");
+	public Post 수정하기(int id, User principal) {
+		//User principal = (User) session.getAttribute("principal");
 		Post post = postRepository.findById(id);
 		
 		if(principal.getId() == post.getUserId()) {
@@ -47,8 +47,8 @@ public class PostService {
 		}
 	}
 	
-	public int 수정완료(ReqUpdateDto dto) {
-		User principal = (User) session.getAttribute("principal");
+	public int 수정완료(ReqUpdateDto dto, User principal) {
+		//User principal = (User) session.getAttribute("principal");
 		Post post = postRepository.findById(dto.getId());
 		
 		if(principal.getId()==post.getUserId()) {
@@ -58,8 +58,8 @@ public class PostService {
 		}
 	}
 	
-	public int 삭제하기(int id) {
-		User principal = (User) session.getAttribute("principal");
+	public int 삭제하기(int id, User principal) {
+		//User principal = (User) session.getAttribute("principal");
 		Post post = postRepository.findById(id);
 		
 		if(principal.getId()==post.getUserId()) {

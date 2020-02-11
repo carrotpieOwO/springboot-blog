@@ -39,13 +39,13 @@ public class CommentService {
 		return respDetailDto;
 	}
 	
-	public int 댓글삭제(int id) {
+	public int 댓글삭제(int id, User principal) {
 		
 		//누가썼는지 확인
 		RespDetailDto comment = commentRepository.findById(id);
 		
 		//로그인 주체 확인
-		User principal = (User) session.getAttribute("principal");
+		//User principal = (User) session.getAttribute("principal");
 		
 		if(comment.getUserId()==principal.getId()) {
 			return commentRepository.delete(id);

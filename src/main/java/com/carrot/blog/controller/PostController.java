@@ -1,10 +1,9 @@
 package com.carrot.blog.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,14 +25,17 @@ import com.carrot.blog.service.PostService;
 @Controller
 public class PostController {
 
-	@Autowired
-	private HttpSession session;
+//	@Autowired
+//	private HttpSession session;
 
 	@Autowired
 	private PostService postService;
 	
 	@Autowired
 	private CommentService commentService;
+	
+//	@Autowired
+//	AuthenticationPrincipal authenticationPrincipal;
 
 	@GetMapping({ "", "/", "/post" })
 	public String posts(Model model) {
@@ -63,15 +65,15 @@ public class PostController {
 	}
 	
 	@GetMapping("/post/update/{postId}")
-	public String update(@PathVariable int postId, Model model) {
-		model.addAttribute("post", postService.수정하기(postId));
+	public String update(@PathVariable int postId, Model model,
+			@AuthenticationPrincipal User principal) {
+		model.addAttribute("post", postService.수정하기(postId, principal));
 		return "/post/update";
 	}
 
 	@PostMapping("/post/write")
-	public ResponseEntity<?> update(@RequestBody ReqWriteDto dto, BindingResult bindingResult) {
-
-		User principal = (User) session.getAttribute("principal");
+	public ResponseEntity<?> update(@RequestBody ReqWriteDto dto, BindingResult bindingResult, @AuthenticationPrincipal User principal
+) {
 		dto.setUserId(principal.getId());
 
 		int result = postService.글쓰기(dto);
@@ -84,9 +86,10 @@ public class PostController {
 	}
 
 	@PutMapping("/post/update")
-	public ResponseEntity<?> update(@RequestBody ReqUpdateDto dto) {
+	public ResponseEntity<?> update(@RequestBody ReqUpdateDto dto, 
+			@AuthenticationPrincipal User principal) {
 
-		int result = postService.수정완료(dto);
+		int result = postService.수정완료(dto, principal);
 
 		if (result == 1) {
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
@@ -99,8 +102,9 @@ public class PostController {
 	}
 
 	@DeleteMapping("/post/delete/{id}") // 데이터 받는 방식이 다르면 맵핑 주소 같아도 상관없다.
-	public @ResponseBody ResponseEntity<?> delete(@PathVariable int id) {
-		int result = postService.삭제하기(id);
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable int id, 
+			@AuthenticationPrincipal User principal) {
+		int result = postService.삭제하기(id, principal);
 		if (result == 1) {
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		} else if (result == -3) {

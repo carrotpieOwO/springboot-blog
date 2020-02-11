@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<sec:authorize access="isAuthenticated()"> <!-- 트루, 펄스 리턴 -->
+    <sec:authentication property="principal" var="principal" /> <!-- principal변수에 principal 담음 principal->userdetail타입을 담은 객체-->
+</sec:authorize>
 
 <!DOCTYPE html>
 <html>
@@ -29,11 +33,12 @@
 		<!-- Navbar links -->
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<ul class="navbar-nav">
+		
 				<c:choose>
-					<c:when test="${not empty sessionScope.principal}">
+					<c:when test="${not empty principal}">
 						<li class="nav-item"><a class="nav-link" href="/post/write">Post</a></li>
-						<li class="nav-item"><a class="nav-link" href="/user/profile/${sessionScope.principal.id}">Profile</a></li>
-						<li class="nav-item"><a class="nav-link" href="/user/logout">LogOut</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/profile/${principal.id}">Profile</a></li>
+						<li class="nav-item"><a class="nav-link" href="/logout">LogOut</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item"><a class="nav-link" href="/user/join">Join</a></li>
@@ -41,7 +46,7 @@
 					</c:otherwise>
 				</c:choose>		
 			</ul>
-			<img src="/media/${sessionScope.principal.profile}" class="rounded-circle my__img ml-auto" width="30px" height="30px" onError="javascript:this.src='/images/unknown.jpg'"/>
+			<img src="/media/${principal.profile}" class="rounded-circle my__img ml-auto" width="30px" height="30px" onError="javascript:this.src='/images/unknown.jpg'"/>
 			<!-- 사진 못찾았을 경우 디폴트 이미지 주기 onerror -->
 		</div>
 	</nav>

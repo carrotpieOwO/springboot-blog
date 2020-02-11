@@ -32,13 +32,15 @@
 		$.ajax({
 			type : 'POST', //로그인은 select 지만 id, pw 를 주소에 남기지 않기위해 post
 			url : '/user/login',
-			data : JSON.stringify(data),
-			contentType : 'application/json; charset=utf-8',
+			data :	data,
+			contentType : 'application/x-www-form-urlencoded',
 			dataType : 'json'
 		}).done(function(r) {
+			console.log(r);
 			alert("로그인성공");
 			location.href = '/';
 		}).fail(function(r) {
+			console.log(r);
 			alert("로그인 실패");
 
 		});

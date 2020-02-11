@@ -5,11 +5,11 @@
 	<!-- 얘네는 사진때문에 컨텐트타입 멀티파트로 바꾸고 이런거 때문에 귀찮아서 그냥 폼으로 전송 -->
 	<!-- form은.. put으로 안됨.. -->
 	<form:form action="/user/profile" method="PUT" enctype="multipart/form-data">
-		<input type="hidden" name="id" value="${sessionScope.principal.id}">
+		<input type="hidden" name="id" value="${principal.id}">
 		
 		<div class="form-group">
 			<label for="username">Username:</label> 
-			<input type="text" class="form-control" id="username" value="${sessionScope.principal.username}" readonly="readonly">
+			<input type="text" class="form-control" id="username" value="${principal.username}" readonly="readonly">
 		</div>
 		<div class="form-group">
 			<label for="password">Password:</label> 
@@ -18,14 +18,14 @@
 		</div>
 		<div class="form-group">
 			<label for="email">Email:</label> 
-			<input type="email" class="form-control" id="email" value="${sessionScope.principal.email}" readonly="readonly">
+			<input type="email" class="form-control" id="email" value="${principal.email}" readonly="readonly">
 		</div>
 
 		<!-- 프로필 사진 -->
 		<div class="form-group">
 			<label for="profile">profile:</label> 
 			<input type="file" class="form-control-file border" name="profile" id="profile" />
-			<p>${sessionScope.principal.profile}</p>
+			<p>${principal.profile}</p>
 		</div>
 		<button id="update--submit" class="btn btn-dark">수정</button>
 	</form:form>
