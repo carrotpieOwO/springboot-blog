@@ -4,11 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.carrot.blog.repository.CommentRepository">
 
-	<select id="findAll"
+	<select id="findByPostId"
 		resultType="com.carrot.blog.model.comment.dto.RespDetailDto">
 		select c.id, c.userId, c.postId, c.content, c.createDate, u.username
 		from comment c inner join user u
-		on c.userId = u.id
+		on c.userId = u.id 
+		where c.postId=#{postId}
 		order by c.id desc
 	</select>
 

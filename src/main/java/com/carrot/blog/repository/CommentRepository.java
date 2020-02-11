@@ -9,5 +9,5 @@ public interface CommentRepository {
 	public int save(ReqDetailDto dto);
 	public RespDetailDto findById(int id);
 	public int delete(int id);
-	public List<RespDetailDto> findAll();
+	public List<RespDetailDto> findByPostId(int id);
 }

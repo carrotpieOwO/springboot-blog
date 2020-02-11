@@ -57,7 +57,7 @@ public class PostController {
 	@GetMapping("/post/detail/{id}")
 	public String detail(@PathVariable int id, Model model) {
 		model.addAttribute("post", postService.상세보기(id));
-		model.addAttribute("comments", commentService.댓글목록());
+		model.addAttribute("comments", commentService.댓글목록(id));
 
 		return "/post/detail";
 	}

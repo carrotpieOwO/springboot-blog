@@ -53,13 +53,15 @@
 			<ul id="comment--items" class="list-group">
 				<c:forEach var="comment" items="${comments}">
 
-					<li id="comment--item--1"
+					<li id="comment--item--${comment.id}"
 						class="list-group-item d-flex justify-content-between align-items-center">
 
 						<div class="font-italic">${comment.content}</div>
 						<div class="badge badge-warning badge-pill ml-auto">작성자:${comment.username}</div>
-						<button onclick="commentDelete(1)"
+						<c:if test="${comment.userId eq sessionScope.principal.id}">
+						<button onclick="commentDelete(${comment.id})"
 							class="badge badge-danger badge-pill">삭제</button>
+						</c:if>
 						<br>
 					</li>
 				</c:forEach>
