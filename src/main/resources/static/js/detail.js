@@ -56,7 +56,7 @@ $('#post--update--submit').on('click', function() {
 		comment_item += `<button onclick="commentDelete(${r.id})" class="badge badge-danger badge-pill">삭제</button>`;
 		comment_item += `</li>`;
 		$('#comment--items').prepend(comment_item);
-				
+		$('#content').val()="";
 	}
 	
 	function commentDelete(commentId){

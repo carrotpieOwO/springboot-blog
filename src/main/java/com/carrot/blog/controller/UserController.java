@@ -153,10 +153,17 @@ public class UserController {
 	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile, 
 			@AuthenticationPrincipal User principal) {
 		//사진이 여러장 일땐 MultipartFile[] 이렇게 배열로 받기
-		System.out.println(profile.getOriginalFilename());
+		System.out.println(profile);
 		
 		UUID uuid = UUID.randomUUID();
-		String uuidFilename= uuid+"_"+profile.getOriginalFilename();
+		String uuidFilename;
+		
+		if(profile != null) {
+			uuidFilename= uuid+"_"+profile.getOriginalFilename();
+		}else {
+			uuidFilename="";
+		}
+		
 		//nio 객체 ! - 사진, 동영상, 스트리밍 다 지원 해줌
 		Path filePath = Paths.get(fileRealPath+uuidFilename);
 		try {

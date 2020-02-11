@@ -75,7 +75,8 @@ public class UserService {
 	
 	public int 수정완료(int id, String password, String profile, User principal) {
 		System.out.println(profile);
-		int result = userRepository.update(id, password, profile);
+		String encodePassword = passwordEncoder.encode(password);
+		int result = userRepository.update(id, encodePassword, profile);
 		
 		if(result==1) {
 			User user = userRepository.findById(id);
