@@ -22,6 +22,9 @@ public class UserService {
 //	private HttpSession session;
 	
 	@Autowired
+	private MyUserDetailService userDetailService;
+	
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Transactional
@@ -73,8 +76,11 @@ public class UserService {
 //		
 //	}
 	
-	public int 수정완료(int id, String password, String profile, User principal) {
+	public int 수정완료(int id, String password, String profile) {
 		System.out.println(profile);
+		User principal = userDetailService.getPrincipal();
+		//얘가 null이라는건 로그인을 안했다는것, 왜냐면 로드바이유저네임을 안했으니까
+		
 		String encodePassword = passwordEncoder.encode(password);
 		int result = userRepository.update(id, encodePassword, profile);
 		

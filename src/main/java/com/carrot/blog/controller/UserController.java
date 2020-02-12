@@ -150,30 +150,32 @@ public class UserController {
 	
 	//form:form 사용함
 	@PutMapping("user/profile")
-	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile, 
-			@AuthenticationPrincipal User principal) {
+	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password, @RequestParam MultipartFile profile) {
 		//사진이 여러장 일땐 MultipartFile[] 이렇게 배열로 받기
-		System.out.println(profile);
+		System.out.println(profile.getOriginalFilename());
 		
 		UUID uuid = UUID.randomUUID();
 		String uuidFilename;
 		
-		if(profile != null) {
+		if(!profile.getOriginalFilename().equals("")) {
 			uuidFilename= uuid+"_"+profile.getOriginalFilename();
 		}else {
 			uuidFilename="";
 		}
 		
 		//nio 객체 ! - 사진, 동영상, 스트리밍 다 지원 해줌
-		Path filePath = Paths.get(fileRealPath+uuidFilename);
-		try {
-			Files.write(filePath, profile.getBytes());
-			//옵션은 yml 에서 걸꺼기 때문에 여기서 안건다.
-		}catch (IOException e) {
-			e.printStackTrace();
+		if(!uuidFilename.equals("")) {
+			Path filePath = Paths.get(fileRealPath+uuidFilename);
+			try {
+				Files.write(filePath, profile.getBytes());
+				//옵션은 yml 에서 걸꺼기 때문에 여기서 안건다.
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		int result = userService.수정완료(id, password, uuidFilename, principal);
+		
+		int result = userService.수정완료(id, password, uuidFilename);
 		StringBuffer sb = new StringBuffer();
 		if(result==1) {
 			//여기서 그냥 "/" 라고하면 데이터 안들고감..

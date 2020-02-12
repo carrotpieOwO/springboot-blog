@@ -39,8 +39,8 @@ public class CommentController {
 	}
 	
 	@DeleteMapping("/comment/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable int id, @AuthenticationPrincipal User principal) {
-		int result = commentService.댓글삭제(id, principal);
+	public ResponseEntity<?> delete(@PathVariable int id) {
+		int result = commentService.댓글삭제(id);
 		
 		//ok, fail, comment 리턴
 		if(result == 1) {

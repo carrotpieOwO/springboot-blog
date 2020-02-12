@@ -65,9 +65,8 @@ public class PostController {
 	}
 	
 	@GetMapping("/post/update/{postId}")
-	public String update(@PathVariable int postId, Model model,
-			@AuthenticationPrincipal User principal) {
-		model.addAttribute("post", postService.수정하기(postId, principal));
+	public String update(@PathVariable int postId, Model model) {
+		model.addAttribute("post", postService.수정하기(postId));
 		return "/post/update";
 	}
 
@@ -86,10 +85,9 @@ public class PostController {
 	}
 
 	@PutMapping("/post/update")
-	public ResponseEntity<?> update(@RequestBody ReqUpdateDto dto, 
-			@AuthenticationPrincipal User principal) {
+	public ResponseEntity<?> update(@RequestBody ReqUpdateDto dto) {
 
-		int result = postService.수정완료(dto, principal);
+		int result = postService.수정완료(dto);
 
 		if (result == 1) {
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
@@ -102,9 +100,8 @@ public class PostController {
 	}
 
 	@DeleteMapping("/post/delete/{id}") // 데이터 받는 방식이 다르면 맵핑 주소 같아도 상관없다.
-	public @ResponseBody ResponseEntity<?> delete(@PathVariable int id, 
-			@AuthenticationPrincipal User principal) {
-		int result = postService.삭제하기(id, principal);
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable int id) {
+		int result = postService.삭제하기(id);
 		if (result == 1) {
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		} else if (result == -3) {

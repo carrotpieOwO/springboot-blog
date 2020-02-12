@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.carrot.blog.model.ReturnCode;
@@ -39,13 +40,14 @@ public class CommentService {
 		return respDetailDto;
 	}
 	
-	public int 댓글삭제(int id, User principal) {
+	public int 댓글삭제(int id) {
 		
 		//누가썼는지 확인
 		RespDetailDto comment = commentRepository.findById(id);
 		
 		//로그인 주체 확인
 		//User principal = (User) session.getAttribute("principal");
+		User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		if(comment.getUserId()==principal.getId()) {
 			return commentRepository.delete(id);
